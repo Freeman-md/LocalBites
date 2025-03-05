@@ -1,6 +1,13 @@
+using LocalBites.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<LocalBitesContext>(
+    options => options.UseSqlite("Data Source=LocalBites.db")
+);
 
 var app = builder.Build();
 
