@@ -12,7 +12,7 @@ public class RestaurantBuilder
     {
         _restaurant = new Restaurant(
             name: "CocoCure",
-            location: "Bromwich",
+            location: Location.NewYork,
             cuisine: Cuisine.Italian,
             description: "Best of the best"
         );
@@ -24,7 +24,7 @@ public class RestaurantBuilder
         return this;
     }
 
-    public RestaurantBuilder WithLocation(string location)
+    public RestaurantBuilder WithLocation(Location location)
     {
         _restaurant.Location = location;
         return this;

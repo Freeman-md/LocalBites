@@ -10,6 +10,14 @@ public enum Cuisine
     Mexican
 }
 
+public enum Location 
+{
+    NewYork,
+    London,
+    Rome,
+    Paris
+}
+
 [Index(nameof(Name), IsUnique = true)]
 public class Restaurant
 {
@@ -19,8 +27,8 @@ public class Restaurant
     public string Name { get; set; }
 
     [Required]
-    [StringLength(50)]
-    public string Location { get; set; }
+    [EnumDataType(typeof(Location))]
+    public Location Location { get; set; }
 
     [Required]
     [EnumDataType(typeof(Cuisine))]
@@ -35,7 +43,7 @@ public class Restaurant
     [Range(0, 5)]
     public int Rating { get; set; }
 
-    public Restaurant(string name, string location, Cuisine cuisine, string description)
+    public Restaurant(string name, Location location, Cuisine cuisine, string description)
     {
         Id = Guid.NewGuid().ToString();
         Name = name;

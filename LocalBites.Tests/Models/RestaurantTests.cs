@@ -27,18 +27,16 @@ public class RestaurantTests
     }
 
     [Theory]
-    [InlineData("", "London", Cuisine.Chinese, "This is a description", 3)]
-    [InlineData(null, "London", Cuisine.Chinese, "This is a description", 3)]
-    [InlineData("*********************************************************", "London", Cuisine.Chinese, "This is a description", 3)]
-    [InlineData("CocoCure", "", Cuisine.Chinese, "This is a description", 3)]
-    [InlineData("CocoCure", null, Cuisine.Chinese, "This is a description", 3)]
-    [InlineData("CocoCure", "*********************************************************", Cuisine.Chinese, "This is a description", 3)]
-    [InlineData("CocoCure", "London", (Cuisine)(-1), "This is a description", 3)]
-    [InlineData("CocoCure", "London", Cuisine.Chinese, "", 3)]
-    [InlineData("CocoCure", "London", Cuisine.Chinese, null, 8)]
+    [InlineData("", Location.London, Cuisine.Chinese, "This is a description", 3)]
+    [InlineData(null, Location.London, Cuisine.Chinese, "This is a description", 3)]
+    [InlineData("*********************************************************", Location.London, Cuisine.Chinese, "This is a description", 3)]
+    [InlineData("CocoCure", (Location)(-1), Cuisine.Chinese, "This is a description", 3)]
+    [InlineData("CocoCure", Location.London, (Cuisine)(-1), "This is a description", 3)]
+    [InlineData("CocoCure", Location.London, Cuisine.Chinese, "", 3)]
+    [InlineData("CocoCure", Location.London, Cuisine.Chinese, null, 8)]
     public void TestMissingProperties_ShouldFailValidation(
         string name, 
-        string location,
+        Location location,
         Cuisine cuisine,
         string description,
         int rating
