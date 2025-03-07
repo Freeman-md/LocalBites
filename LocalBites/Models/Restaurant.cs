@@ -1,15 +1,43 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+
 namespace Models.Restaurant;
 
-public class Restaurant {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    public required string Name { get; set; }
-    public required string Location { get; set; }
-    public required string Cuisine { get; set; }
-    public required string Description { get; set; }
-    public string? ImageUrl { get; set; }
-    public double Rating { get; set; }
+public enum Cuisine
+{
+    Italian,
+    Chinese,
+    Mexican
+}
 
-    public Restaurant(string name, string location, string cuisine, string description) {
+[Index(nameof(Name), IsUnique = true)]
+public class Restaurant
+{
+    public string Id { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; }
+
+    [Required]
+    [StringLength(50)]
+    public string Location { get; set; }
+
+    [Required]
+    [EnumDataType(typeof(Cuisine))]
+    public Cuisine Cuisine { get; set; }
+
+    [Required]
+    [StringLength(200)]
+    public string Description { get; set; }
+
+    public string? ImageUrl { get; set; }
+
+    [Range(0, 5)]
+    public int Rating { get; set; }
+
+    public Restaurant(string name, string location, Cuisine cuisine, string description)
+    {
+        Id = Guid.NewGuid().ToString();
         Name = name;
         Location = location;
         Cuisine = cuisine;
