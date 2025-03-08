@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Models.Restaurant;
+using LocalBites.Models;
 
 namespace LocalBites.Tests.Builders;
 

@@ -1,5 +1,5 @@
 using System;
-using Models.Restaurant;
+using LocalBites.Models;
 
 namespace LocalBites.Interfaces.Repositories;
 

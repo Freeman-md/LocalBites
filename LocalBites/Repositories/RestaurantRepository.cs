@@ -1,7 +1,8 @@
 using System;
 using LocalBites.Data;
 using LocalBites.Interfaces.Repositories;
-using Models.Restaurant;
+using Microsoft.EntityFrameworkCore;
+using LocalBites.Models;
 
 namespace LocalBites.Repositories;
 
@@ -9,7 +10,8 @@ public class RestaurantRepository : IRestaurantRepository
 {
     private readonly LocalBitesContext _dbContext;
 
-    public RestaurantRepository(LocalBitesContext dbContext) {
+    public RestaurantRepository(LocalBitesContext dbContext)
+    {
         _dbContext = dbContext;
     }
 
@@ -30,7 +32,7 @@ public class RestaurantRepository : IRestaurantRepository
 
     public async Task<List<Restaurant>> GetAll()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Restaurants.AsNoTracking().ToListAsync();
     }
 
     public Task<Restaurant> GetById(int id)
