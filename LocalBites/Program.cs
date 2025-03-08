@@ -1,4 +1,6 @@
 using LocalBites.Data;
+using LocalBites.Interfaces.Repositories;
+using LocalBites.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<LocalBitesContext>(
     options => options.UseSqlite("Data Source=LocalBites.db")
 );
+
+builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
 var app = builder.Build();
 

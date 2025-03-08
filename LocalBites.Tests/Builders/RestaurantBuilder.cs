@@ -62,15 +62,15 @@ public class RestaurantBuilder
         };
     }
 
-    public IEnumerable<Restaurant> BuildMany(int count)
+    public static IEnumerable<Restaurant> BuildMany(int count)
     {
         for (int i = 1; i <= count; i++)
         {
             yield return new RestaurantBuilder()
-                .WithName($"{_restaurant.Name} {i}")
-                .WithLocation(_restaurant.Location)
-                .WithCuisine(_restaurant.Cuisine)
-                .WithDescription(_restaurant.Description)
+                .WithName($"{Guid.NewGuid()} {i}")
+                .WithLocation(Location.NewYork)
+                .WithCuisine(Cuisine.Chinese)
+                .WithDescription(Guid.NewGuid().ToString())
                 .Build();
         }
     }

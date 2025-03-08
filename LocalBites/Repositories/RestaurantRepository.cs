@@ -1,4 +1,5 @@
 using System;
+using LocalBites.Data;
 using LocalBites.Interfaces.Repositories;
 using Models.Restaurant;
 
@@ -6,6 +7,12 @@ namespace LocalBites.Repositories;
 
 public class RestaurantRepository : IRestaurantRepository
 {
+    private readonly LocalBitesContext _dbContext;
+
+    public RestaurantRepository(LocalBitesContext dbContext) {
+        _dbContext = dbContext;
+    }
+
     public Task<Restaurant> Add(Restaurant restaurant)
     {
         throw new NotImplementedException();
@@ -21,7 +28,7 @@ public class RestaurantRepository : IRestaurantRepository
         throw new NotImplementedException();
     }
 
-    public Task<List<Restaurant>> GetAll()
+    public async Task<List<Restaurant>> GetAll()
     {
         throw new NotImplementedException();
     }
