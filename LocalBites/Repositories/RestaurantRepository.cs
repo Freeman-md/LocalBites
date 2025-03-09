@@ -3,6 +3,7 @@ using LocalBites.Data;
 using LocalBites.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using LocalBites.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace LocalBites.Repositories;
 
@@ -15,9 +16,11 @@ public class RestaurantRepository : IRestaurantRepository
         _dbContext = dbContext;
     }
 
-    public Task<Restaurant> Add(Restaurant restaurant)
+    public async Task<Restaurant> Add(Restaurant restaurant)
     {
-        throw new NotImplementedException();
+        _dbContext.Add(restaurant);
+        await _dbContext.SaveChangesAsync();
+        return restaurant;
     }
 
     public Task Delete(string id)

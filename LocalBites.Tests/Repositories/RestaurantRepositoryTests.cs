@@ -94,6 +94,23 @@ public class RestaurantRepositoryTests
         #endregion
     }
 
+    [Fact]
+    public async Task Add_ShouldAddRestaurant_WhenValidDataProvided() {
+        #region Arrange
+            Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
+        #endregion
+
+        #region Act
+            Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
+            Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(savedRestaurant.Id);
+        #endregion
+
+        #region Assert
+            Assert.NotNull(retrievedRestaurant);
+            Assert.True(savedRestaurant.PropertiesAreEqual(retrievedRestaurant));
+        #endregion
+    }
+
     private void Dispose()
     {
         _dbContext.Dispose();
