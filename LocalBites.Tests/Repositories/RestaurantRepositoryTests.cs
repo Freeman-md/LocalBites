@@ -114,6 +114,54 @@ public class RestaurantRepositoryTests
     }
 
     [Fact]
+    public async Task AddMany_ShouldAddRestaurants_WhenValidDataProvided()
+    {
+        #region Arrange
+        var restaurants = RestaurantBuilder.BuildMany(3).ToList();
+        #endregion
+
+        #region Act
+        var addedRestaurants = await _restaurantRepository.AddMany(restaurants);
+        var allRestaurants = await _restaurantRepository.GetAll();
+        #endregion
+
+        #region Assert
+        Assert.NotNull(addedRestaurants);
+        Assert.Equal(3, addedRestaurants.Count);
+        Assert.Equal(3, allRestaurants.Count);
+        Assert.All(addedRestaurants, restaurant =>
+            Assert.Contains(allRestaurants, r => r.Id == restaurant.Id));
+        #endregion
+    }
+
+    [Fact]
+    public async Task AddMany_ShouldReturnEmptyList_WhenGivenEmptyList()
+    {
+        #region Act
+        var result = await _restaurantRepository.AddMany(new List<Restaurant>());
+        #endregion
+
+        #region Assert
+        Assert.NotNull(result);
+        Assert.Empty(result);
+        #endregion
+    }
+
+    [Fact]
+    public async Task AddMany_ShouldReturnEmptyList_WhenGivenNull()
+    {
+        #region Act
+        var result = await _restaurantRepository.AddMany(null);
+        #endregion
+
+        #region Assert
+        Assert.NotNull(result);
+        Assert.Empty(result);
+        #endregion
+    }
+
+
+    [Fact]
     public async Task Update_ShouldUpdateRestaurant_WhenValidIdProvided()
     {
         #region Arrange
@@ -247,6 +295,34 @@ public class RestaurantRepositoryTests
         #endregion
     }
 
+    [Fact]
+    public async Task ExistsById_ShouldReturnTrue_WhenIdExists()
+    {
+        #region Arrange
+        Restaurant restaurant = new RestaurantBuilder().Build();
+        await _restaurantRepository.Add(restaurant);
+        #endregion
+
+        #region Act
+        bool exists = await _restaurantRepository.ExistsById(restaurant.Id);
+        #endregion
+
+        #region Assert
+        Assert.True(exists);
+        #endregion
+    }
+
+    [Fact]
+    public async Task ExistsById_ShouldReturnFalse_WhenIdDoesNotExist()
+    {
+        #region Act
+        bool exists = await _restaurantRepository.ExistsById(Guid.NewGuid().ToString());
+        #endregion
+
+        #region Assert
+        Assert.False(exists);
+        #endregion
+    }
 
     private void Dispose()
     {
