@@ -23,6 +23,18 @@ public class RestaurantRepository : IRestaurantRepository
         return restaurant;
     }
 
+    public async Task<List<Restaurant>> AddMany(List<Restaurant> restaurants)
+    {
+        if (restaurants == null || restaurants.Count == 0)
+            return new List<Restaurant>();
+
+        await _dbContext.Restaurants.AddRangeAsync(restaurants);
+        await _dbContext.SaveChangesAsync();
+
+        return restaurants;
+    }
+
+
     public Task Delete(string id)
     {
         throw new NotImplementedException();
@@ -43,8 +55,21 @@ public class RestaurantRepository : IRestaurantRepository
         return await _dbContext.Restaurants.FindAsync(id);
     }
 
-    public Task<Restaurant> Update(string id, Restaurant restaurant)
+    public async Task<Restaurant> Update(string id, Restaurant restaurant)
     {
-        throw new NotImplementedException();
+        var existingRestaurant = await _dbContext.Restaurants.FindAsync(id);
+        if (existingRestaurant == null)
+            throw new KeyNotFoundException($"Restaurant with ID '{id}' not found");
+
+        _dbContext.Entry(existingRestaurant).CurrentValues.SetValues(restaurant);
+
+        await _dbContext.SaveChangesAsync();
+
+        return existingRestaurant;
+    }
+
+    public async Task<bool> ExistsById(string id)
+    {
+        return await _dbContext.Restaurants.AnyAsync(r => r.Id == id);
     }
 }

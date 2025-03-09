@@ -33,8 +33,8 @@ public class RestaurantRepositoryTests
         const int NUMBER_OF_RESTAURANTS = 4;
 
         var restaurants = RestaurantBuilder.BuildMany(NUMBER_OF_RESTAURANTS).ToList();
-        await _dbContext.Restaurants.AddRangeAsync(restaurants);
-        await _dbContext.SaveChangesAsync();
+        
+        await _restaurantRepository.AddMany(restaurants);
         #endregion
 
         #region Act
@@ -69,8 +69,7 @@ public class RestaurantRepositoryTests
         #region Arrange
             Restaurant restaurant = new RestaurantBuilder().Build();
 
-            await _dbContext.Restaurants.AddAsync(restaurant);
-            await _dbContext.SaveChangesAsync();
+            await _restaurantRepository.Add(restaurant);
         #endregion
 
         #region Act
@@ -79,7 +78,7 @@ public class RestaurantRepositoryTests
 
         #region Assert
             Assert.NotNull(retrievedRestaurant);
-            Assert.Equal(restaurant.Name, retrievedRestaurant.Name);
+            Assert.True(retrievedRestaurant.PropertiesAreEqual(restaurant));
         #endregion
     }
 
@@ -108,6 +107,34 @@ public class RestaurantRepositoryTests
         #region Assert
             Assert.NotNull(retrievedRestaurant);
             Assert.True(savedRestaurant.PropertiesAreEqual(retrievedRestaurant));
+        #endregion
+    }
+
+    [Fact]
+    public async Task Update_ShouldUpdateRestaurant_WhenValidIdProvided() {
+        #region Arrange
+            const string UPDATED_NAME = "Newly Updated Restaurant Name";
+            Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
+            Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
+
+            savedRestaurant.Name = UPDATED_NAME;
+        #endregion
+
+        #region Act
+            Restaurant? updatedRestaurant = await _restaurantRepository.Update(savedRestaurant.Id, savedRestaurant);    
+        #endregion
+
+        #region Assert
+            Assert.NotNull(updatedRestaurant);
+            Assert.Equal(UPDATED_NAME, updatedRestaurant.Name);
+            Assert.True(updatedRestaurant.PropertiesAreEqual(savedRestaurant));
+        #endregion
+    }
+
+    [Fact]
+    public async Task Update_ShouldThrowException_WhenIdDoesNotExist() {
+        #region Act && Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _restaurantRepository.Update(Guid.NewGuid().ToString(), new RestaurantBuilder().Build()));
         #endregion
     }
 
