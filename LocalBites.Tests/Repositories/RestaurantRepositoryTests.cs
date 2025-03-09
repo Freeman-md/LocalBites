@@ -138,6 +138,30 @@ public class RestaurantRepositoryTests
         #endregion
     }
 
+    [Fact]
+    public async Task Delete_ShouldRemoveRestaurant_WhenValidIdProvided() {
+        #region Arrange
+            Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
+            Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
+        #endregion
+
+        #region Act
+            await _restaurantRepository.Delete(savedRestaurant.Id);    
+            var result = await _restaurantRepository.GetById(savedRestaurant.Id);
+        #endregion
+
+        #region Assert
+            Assert.Null(result);
+        #endregion
+    }
+
+    [Fact]
+    public async Task Delete_ShouldThrowException_WhenIdDoesNotExist() {
+        #region Act && Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _restaurantRepository.Delete(Guid.NewGuid().ToString()));
+        #endregion
+    }
+
     private void Dispose()
     {
         _dbContext.Dispose();

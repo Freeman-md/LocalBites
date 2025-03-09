@@ -35,9 +35,14 @@ public class RestaurantRepository : IRestaurantRepository
     }
 
 
-    public Task Delete(string id)
+    public async Task Delete(string id)
     {
-        throw new NotImplementedException();
+        var existingRestaurant = await GetById(id);
+        if (existingRestaurant == null)
+            throw new KeyNotFoundException($"Restaurant with ID '{id}' not found");
+
+        _dbContext.Restaurants.Remove(existingRestaurant);
+        await _dbContext.SaveChangesAsync();
     }
 
     public Task<List<Restaurant>> FilterByPreferences(Cuisine cuisine, Location location)
@@ -57,7 +62,7 @@ public class RestaurantRepository : IRestaurantRepository
 
     public async Task<Restaurant> Update(string id, Restaurant restaurant)
     {
-        var existingRestaurant = await _dbContext.Restaurants.FindAsync(id);
+        var existingRestaurant = await GetById(id);
         if (existingRestaurant == null)
             throw new KeyNotFoundException($"Restaurant with ID '{id}' not found");
 
