@@ -14,5 +14,5 @@ public interface IRestaurantRepository
     public Task<bool> ExistsById(string id);
 
     public Task Delete(string id);
-    public Task<List<Restaurant>> FilterByPreferences(Cuisine cuisine, Location location);
+    public Task<List<Restaurant>> FilterByPreferences(Cuisine? cuisine = null, Location? location = null);
 }

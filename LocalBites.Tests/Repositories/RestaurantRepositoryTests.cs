@@ -33,7 +33,7 @@ public class RestaurantRepositoryTests
         const int NUMBER_OF_RESTAURANTS = 4;
 
         var restaurants = RestaurantBuilder.BuildMany(NUMBER_OF_RESTAURANTS).ToList();
-        
+
         await _restaurantRepository.AddMany(restaurants);
         #endregion
 
@@ -65,102 +65,188 @@ public class RestaurantRepositoryTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnRestaurant_WhenIdExists() {
+    public async Task GetById_ShouldReturnRestaurant_WhenIdExists()
+    {
         #region Arrange
-            Restaurant restaurant = new RestaurantBuilder().Build();
+        Restaurant restaurant = new RestaurantBuilder().Build();
 
-            await _restaurantRepository.Add(restaurant);
+        await _restaurantRepository.Add(restaurant);
         #endregion
 
         #region Act
-            Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(restaurant.Id);
+        Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(restaurant.Id);
         #endregion
 
         #region Assert
-            Assert.NotNull(retrievedRestaurant);
-            Assert.True(retrievedRestaurant.PropertiesAreEqual(restaurant));
+        Assert.NotNull(retrievedRestaurant);
+        Assert.True(retrievedRestaurant.PropertiesAreEqual(restaurant));
         #endregion
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnNull_WhenIdDoesNotExist() {
+    public async Task GetById_ShouldReturnNull_WhenIdDoesNotExist()
+    {
         #region Act
-            Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(Guid.NewGuid().ToString());
+        Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(Guid.NewGuid().ToString());
         #endregion
 
         #region Assert
-            Assert.Null(retrievedRestaurant);
+        Assert.Null(retrievedRestaurant);
         #endregion
     }
 
     [Fact]
-    public async Task Add_ShouldAddRestaurant_WhenValidDataProvided() {
+    public async Task Add_ShouldAddRestaurant_WhenValidDataProvided()
+    {
         #region Arrange
-            Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
+        Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
         #endregion
 
         #region Act
-            Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
-            Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(savedRestaurant.Id);
+        Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
+        Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(savedRestaurant.Id);
         #endregion
 
         #region Assert
-            Assert.NotNull(retrievedRestaurant);
-            Assert.True(savedRestaurant.PropertiesAreEqual(retrievedRestaurant));
+        Assert.NotNull(retrievedRestaurant);
+        Assert.True(savedRestaurant.PropertiesAreEqual(retrievedRestaurant));
         #endregion
     }
 
     [Fact]
-    public async Task Update_ShouldUpdateRestaurant_WhenValidIdProvided() {
+    public async Task Update_ShouldUpdateRestaurant_WhenValidIdProvided()
+    {
         #region Arrange
-            const string UPDATED_NAME = "Newly Updated Restaurant Name";
-            Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
-            Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
+        const string UPDATED_NAME = "Newly Updated Restaurant Name";
+        Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
+        Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
 
-            savedRestaurant.Name = UPDATED_NAME;
+        savedRestaurant.Name = UPDATED_NAME;
         #endregion
 
         #region Act
-            Restaurant? updatedRestaurant = await _restaurantRepository.Update(savedRestaurant.Id, savedRestaurant);    
+        Restaurant? updatedRestaurant = await _restaurantRepository.Update(savedRestaurant.Id, savedRestaurant);
         #endregion
 
         #region Assert
-            Assert.NotNull(updatedRestaurant);
-            Assert.Equal(UPDATED_NAME, updatedRestaurant.Name);
-            Assert.True(updatedRestaurant.PropertiesAreEqual(savedRestaurant));
+        Assert.NotNull(updatedRestaurant);
+        Assert.Equal(UPDATED_NAME, updatedRestaurant.Name);
+        Assert.True(updatedRestaurant.PropertiesAreEqual(savedRestaurant));
         #endregion
     }
 
     [Fact]
-    public async Task Update_ShouldThrowException_WhenIdDoesNotExist() {
+    public async Task Update_ShouldThrowException_WhenIdDoesNotExist()
+    {
         #region Act && Assert
-            await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _restaurantRepository.Update(Guid.NewGuid().ToString(), new RestaurantBuilder().Build()));
+        await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _restaurantRepository.Update(Guid.NewGuid().ToString(), new RestaurantBuilder().Build()));
         #endregion
     }
 
     [Fact]
-    public async Task Delete_ShouldRemoveRestaurant_WhenValidIdProvided() {
+    public async Task Delete_ShouldRemoveRestaurant_WhenValidIdProvided()
+    {
         #region Arrange
-            Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
-            Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
+        Restaurant unsavedRestaurant = new RestaurantBuilder().Build();
+        Restaurant savedRestaurant = await _restaurantRepository.Add(unsavedRestaurant);
         #endregion
 
         #region Act
-            await _restaurantRepository.Delete(savedRestaurant.Id);    
-            var result = await _restaurantRepository.GetById(savedRestaurant.Id);
+        await _restaurantRepository.Delete(savedRestaurant.Id);
+        var result = await _restaurantRepository.GetById(savedRestaurant.Id);
         #endregion
 
         #region Assert
-            Assert.Null(result);
+        Assert.Null(result);
         #endregion
     }
 
     [Fact]
-    public async Task Delete_ShouldThrowException_WhenIdDoesNotExist() {
+    public async Task Delete_ShouldThrowException_WhenIdDoesNotExist()
+    {
         #region Act && Assert
-            await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _restaurantRepository.Delete(Guid.NewGuid().ToString()));
+        await Assert.ThrowsAsync<KeyNotFoundException>(async () => await _restaurantRepository.Delete(Guid.NewGuid().ToString()));
         #endregion
     }
+
+    [Theory]
+    [InlineData(Cuisine.Italian, Location.NewYork)]
+    [InlineData(Cuisine.Mexican, Location.NewYork)]
+    [InlineData(Cuisine.Chinese, Location.NewYork)]
+    [InlineData(Cuisine.Italian, Location.London)]
+    [InlineData(Cuisine.Mexican, Location.London)]
+    [InlineData(Cuisine.Chinese, Location.London)]
+    [InlineData(Cuisine.Italian, Location.Paris)]
+    [InlineData(Cuisine.Mexican, Location.Paris)]
+    [InlineData(Cuisine.Chinese, Location.Paris)]
+    [InlineData(Cuisine.Italian, Location.Rome)]
+    [InlineData(Cuisine.Mexican, Location.Rome)]
+    [InlineData(Cuisine.Chinese, Location.Rome)]
+    [InlineData(Cuisine.Italian, (Location)(-1))]
+    [InlineData(Cuisine.Chinese, (Location)(-1))]
+    [InlineData(Cuisine.Mexican, (Location)(-1))]
+    [InlineData((Cuisine)(-1), Location.NewYork)]
+    [InlineData((Cuisine)(-1), Location.London)]
+    [InlineData((Cuisine)(-1), Location.Paris)]
+    [InlineData((Cuisine)(-1), Location.Rome)]
+    public async Task FilterByPreferences_ShouldReturnMatchingRestaurants_WhenCriteriaMatch(Cuisine? cuisine, Location? location)
+    {
+        #region Arrange
+        var restaurants = new List<Restaurant>{
+            new RestaurantBuilder().WithCuisine(Cuisine.Italian).WithLocation(Location.NewYork).Build(),
+            new RestaurantBuilder().WithCuisine(Cuisine.Chinese).WithLocation(Location.London).Build(),
+            new RestaurantBuilder().WithCuisine(Cuisine.Mexican).WithLocation(Location.Paris).Build(),
+            new RestaurantBuilder().WithCuisine(Cuisine.Italian).WithLocation(Location.Rome).Build(),
+        };
+
+        await _restaurantRepository.AddMany(restaurants);
+        #endregion
+
+        #region Act
+        var result = await _restaurantRepository.FilterByPreferences(cuisine, location);
+        #endregion
+
+        #region Assert
+        Assert.NotNull(result);
+        Assert.All(result, (restaurant) =>
+        {
+
+            if (cuisine.HasValue)
+            {
+                Assert.Equal(cuisine.Value, restaurant.Cuisine);
+            }
+
+            if (location.HasValue)
+            {
+                Assert.Equal(location.Value, restaurant.Location);
+            }
+
+        });
+        #endregion
+    }
+
+    [Fact]
+    public async Task FilterByPreferences_ShouldReturnEmptyList_WhenNoMatchesFound()
+    {
+        #region Arrange
+        var restaurants = new List<Restaurant>{
+        new RestaurantBuilder().WithCuisine(Cuisine.Italian).WithLocation(Location.NewYork).Build(),
+        new RestaurantBuilder().WithCuisine(Cuisine.Chinese).WithLocation(Location.London).Build()
+    };
+
+        await _restaurantRepository.AddMany(restaurants);
+        #endregion
+
+        #region Act
+        var result = await _restaurantRepository.FilterByPreferences(Cuisine.Mexican, Location.Paris); // No matching restaurant
+        #endregion
+
+        #region Assert
+        Assert.NotNull(result);
+        Assert.Empty(result);
+        #endregion
+    }
+
 
     private void Dispose()
     {

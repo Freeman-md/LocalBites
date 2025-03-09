@@ -45,9 +45,15 @@ public class RestaurantRepository : IRestaurantRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public Task<List<Restaurant>> FilterByPreferences(Cuisine cuisine, Location location)
+    public async Task<List<Restaurant>> FilterByPreferences(Cuisine? cuisine = null, Location? location = null)
     {
-        throw new NotImplementedException();
+        IQueryable<Restaurant> query = _dbContext.Restaurants.AsNoTracking();
+
+        if (cuisine.HasValue) query = query.Where(restaurant => restaurant.Cuisine == cuisine.Value);
+
+        if (location.HasValue) query = query.Where(restaurant => restaurant.Location == location.Value);
+
+        return await query.ToListAsync();
     }
 
     public async Task<List<Restaurant>> GetAll()
