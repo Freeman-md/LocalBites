@@ -20,7 +20,7 @@ public class RestaurantRepository : IRestaurantRepository
         throw new NotImplementedException();
     }
 
-    public Task Delete(int id)
+    public Task Delete(string id)
     {
         throw new NotImplementedException();
     }
@@ -35,12 +35,12 @@ public class RestaurantRepository : IRestaurantRepository
         return await _dbContext.Restaurants.AsNoTracking().ToListAsync();
     }
 
-    public Task<Restaurant> GetById(int id)
+    public async Task<Restaurant?> GetById(string id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Restaurants.FindAsync(id);
     }
 
-    public Task<Restaurant> Update(int id, Restaurant restaurant)
+    public Task<Restaurant> Update(string id, Restaurant restaurant)
     {
         throw new NotImplementedException();
     }

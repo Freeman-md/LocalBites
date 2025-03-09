@@ -64,6 +64,36 @@ public class RestaurantRepositoryTests
         #endregion
     }
 
+    [Fact]
+    public async Task GetById_ShouldReturnRestaurant_WhenIdExists() {
+        #region Arrange
+            Restaurant restaurant = new RestaurantBuilder().Build();
+
+            await _dbContext.Restaurants.AddAsync(restaurant);
+            await _dbContext.SaveChangesAsync();
+        #endregion
+
+        #region Act
+            Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(restaurant.Id);
+        #endregion
+
+        #region Assert
+            Assert.NotNull(retrievedRestaurant);
+            Assert.Equal(restaurant.Name, retrievedRestaurant.Name);
+        #endregion
+    }
+
+    [Fact]
+    public async Task GetById_ShouldReturnNull_WhenIdDoesNotExist() {
+        #region Act
+            Restaurant? retrievedRestaurant = await _restaurantRepository.GetById(Guid.NewGuid().ToString());
+        #endregion
+
+        #region Assert
+            Assert.Null(retrievedRestaurant);
+        #endregion
+    }
+
     private void Dispose()
     {
         _dbContext.Dispose();
