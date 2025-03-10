@@ -30,4 +30,10 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<LocalBitesContext>();
+    dbContext.Database.Migrate();
+}
+
 app.Run();
