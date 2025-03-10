@@ -22,4 +22,15 @@ public class IndexModel : PageModel
     {
         Restaurants = await _restaurantRepository.GetAll();
     }
+
+    public async Task OnPostFilter(Cuisine? cuisine, Location? location)
+    {
+        if (cuisine.HasValue && !Enum.IsDefined(typeof(Cuisine), cuisine.Value)) 
+            throw new ArgumentException("Invalid cuisine selection");
+        
+        if (location.HasValue && !Enum.IsDefined(typeof(Location), location.Value)) 
+            throw new ArgumentException("Invalid location selection");
+
+        Restaurants = await _restaurantRepository.FilterByPreferences(cuisine, location);
+    }
 }

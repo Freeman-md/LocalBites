@@ -24,7 +24,7 @@ public class IndexModelTests
     }
 
     [Fact]
-    public async Task OnGetAsync_PopulatesThePageModel_WithAListOfMessages()
+    public async Task OnGetAsync_PopulatesPageModel_WithAListOfRestaurants()
     {
         #region Arrange
         var restaurants = RestaurantBuilder.BuildMany(4).ToList();
@@ -43,4 +43,83 @@ public class IndexModelTests
         );
         #endregion
     }
+
+    [Theory]
+    [InlineData(Cuisine.Italian, Location.NewYork)]
+    [InlineData(Cuisine.Mexican, Location.NewYork)]
+    [InlineData(Cuisine.Chinese, Location.NewYork)]
+    [InlineData(Cuisine.Italian, Location.London)]
+    [InlineData(Cuisine.Mexican, Location.London)]
+    [InlineData(Cuisine.Chinese, Location.London)]
+    [InlineData(Cuisine.Italian, Location.Paris)]
+    [InlineData(Cuisine.Mexican, Location.Paris)]
+    [InlineData(Cuisine.Chinese, Location.Paris)]
+    [InlineData(Cuisine.Italian, Location.Rome)]
+    [InlineData(Cuisine.Mexican, Location.Rome)]
+    [InlineData(Cuisine.Chinese, Location.Rome)]
+    public async Task OnPostFilter_PopulatesPageModel_WithFilteredRestaurants(Cuisine cuisine, Location location)
+    {
+        #region Arrange
+        var restaurants = new List<Restaurant>{
+            new RestaurantBuilder().WithCuisine(Cuisine.Italian).WithLocation(Location.NewYork).Build(),
+            new RestaurantBuilder().WithCuisine(Cuisine.Chinese).WithLocation(Location.London).Build(),
+            new RestaurantBuilder().WithCuisine(Cuisine.Mexican).WithLocation(Location.Paris).Build(),
+            new RestaurantBuilder().WithCuisine(Cuisine.Italian).WithLocation(Location.Rome).Build(),
+        };
+
+        _restaurantRepository.Setup(repo => repo.FilterByPreferences(cuisine, location)).ReturnsAsync(
+            restaurants
+                .AsQueryable()
+                .Where(restaurant => restaurant.Cuisine == cuisine)
+                .Where(restaurant => restaurant.Location == location)
+                .ToList()
+            );
+        #endregion
+
+        #region Act
+            await _indexModel.OnPostFilter(cuisine, location);
+        #endregion
+
+        #region Assert
+            Assert.NotNull(_indexModel.Restaurants);
+
+            Assert.All(_indexModel.Restaurants, (restaurant) => {
+                Assert.Equal(cuisine, restaurant.Cuisine);
+                Assert.Equal(location, restaurant.Location);
+            });
+        #endregion
+    }
+
+    [Fact]
+    public async Task OnPostFilter_ShouldReturnEmptyList_WhenNoMatchesFound() {
+        #region Arrange
+            _restaurantRepository
+                .Setup(repo => repo.FilterByPreferences(It.IsAny<Cuisine>(), It.IsAny<Location>()))
+                .ReturnsAsync(new List<Restaurant>());
+        #endregion
+
+        #region Act
+            await _indexModel.OnPostFilter(Cuisine.Italian, Location.Paris);
+        #endregion
+
+        #region Assert
+            Assert.NotNull(_indexModel.Restaurants);
+            Assert.Empty(_indexModel.Restaurants);
+        #endregion
+    }
+
+    [Theory]
+    [InlineData(Cuisine.Italian, (Location)(-1))]
+    [InlineData(Cuisine.Chinese, (Location)(-1))]
+    [InlineData(Cuisine.Mexican, (Location)(-1))]
+    [InlineData((Cuisine)(-1), Location.NewYork)]
+    [InlineData((Cuisine)(-1), Location.London)]
+    [InlineData((Cuisine)(-1), Location.Paris)]
+    [InlineData((Cuisine)(-1), Location.Rome)]
+    public async Task OnPostFilter_ShouldHandleInvalidInputs_Gracefully(Cuisine cuisine, Location location) {
+        #region Act && Assert
+        await Assert.ThrowsAsync<ArgumentException>(() => _indexModel.OnPostFilter(cuisine, location));
+        #endregion
+    }
+
 }
