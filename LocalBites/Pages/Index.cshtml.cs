@@ -12,6 +12,8 @@ public class IndexModel : PageModel
     private readonly IRestaurantRepository _restaurantRepository;
 
     public List<Restaurant> Restaurants { get; set; } = new();
+    public List<Cuisine> Cuisines  { get; set; } = new();
+    public List<Location> Locations  { get; set; } = new();
 
     [BindProperty(SupportsGet = true)]
     public FilterCriteria Filter { get; set; } = new();
@@ -24,6 +26,9 @@ public class IndexModel : PageModel
 
     public async Task OnGet()
     {
+        Cuisines = Enum.GetValues(typeof(Cuisine)).Cast<Cuisine>().ToList();
+        Locations = Enum.GetValues(typeof(Cuisine)).Cast<Location>().ToList();
+        
         Restaurants = await _restaurantRepository.GetAll();
     }
 

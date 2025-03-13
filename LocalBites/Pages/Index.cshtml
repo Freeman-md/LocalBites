@@ -4,9 +4,50 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Testing Filters</p>
-    <div class="restaurant-item">a restaurant item</div>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section id="heading" class="w-full max-w-xl mx-auto text-center justify-center mb-8">
+
+    <div class="badge badge-primary mb-2 inline-block">
+        Discover & Organize
+    </div>
+
+    <h1 class="text-3xl md:text-4xl font-display font-medium mb-2">Your Restaurant Collection</h1>
+
+    <p class="text-[#65758b]">
+        Keep track of your favorite dining spots, organize by cuisine and location, and never forget that amazing place you discovered.
+    </p>
+
+</section>
+
+<section id="filters" class="border rounded-lg p-4">
+    <form action="" class="flex space-x-4 justify-between items-center">
+        <div class="flex space-x-2 items-center">
+            <select name="Filter.Cuisine" id="Filter.Cuisine" class="w-40">
+                @foreach (var Cuisine in Model.Cuisines) {
+                    <option value="@Cuisine">@Cuisine</option>
+                }
+            </select>
+    
+            <select name="Filter.Location" id="Filter.Location" class="w-40">
+                @foreach (var Location in Model.Locations) {
+                    <option value="@Location">@Location</option>
+                }
+            </select>
+
+            <button class="btn btn-primary text-base">Filter</button>
+        </div>
+    
+        <div class="flex space-x-2 items-center">
+            <button class="text-gray-500">
+                <span>&times;</span> <span class="text-sm">Clear Filters</span>
+            </button>
+        </div>
+    </form>
+</section>
+
+<section id="restaurants" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    @foreach (var restaurant in Model.Restaurants) {
+        <partial name="_RestaurantCard" model="restaurant" />
+    }
+
+    <partial name="_RestaurantCard" />
+</section>
