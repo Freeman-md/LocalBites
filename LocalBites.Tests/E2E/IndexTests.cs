@@ -41,7 +41,7 @@ public class IndexTests : IAsyncLifetime
         // await _page.ClickAsync("#filter-button");
 
         var filteredText  = await _page.InnerTextAsync("body");
-        Assert.Contains("Testing Filters", filteredText);
+        Assert.Contains("Clear Filters", filteredText);
     }
 
 

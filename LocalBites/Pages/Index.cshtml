@@ -45,9 +45,11 @@
 </section>
 
 <section id="restaurants" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    @foreach (var restaurant in Model.Restaurants) {
-        <partial name="_RestaurantCard" model="restaurant" />
+    @if (Model.Restaurants.Count <= 0) {
+        <p>There are no restaurants</p>
+    } else {
+        @foreach (var restaurant in Model.Restaurants) {
+            <partial name="_RestaurantCard" model="restaurant" />
+        }
     }
-
-    <partial name="_RestaurantCard" />
 </section>

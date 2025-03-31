@@ -30,7 +30,7 @@
     }
 
     .badge-sm {
-        @apply text-xs! px-1.5! py-0.5!
+        @apply text-xs px-1.5 py-0.5
     }
 
     .badge-primary {

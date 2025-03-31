@@ -18,7 +18,7 @@ public class RestaurantRepository : IRestaurantRepository
 
     public async Task<Restaurant> Add(Restaurant restaurant)
     {
-        _dbContext.Add(restaurant);
+        _dbContext.Restaurants.Add(restaurant);
         await _dbContext.SaveChangesAsync();
         return restaurant;
     }

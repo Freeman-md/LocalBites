@@ -63,6 +63,7 @@ public class RestaurantTests
         #region Assert
         Assert.False(isValid);
         Assert.NotNull(validationResults);
+        Assert.NotEmpty(validationResults);
         #endregion
     }
 }
