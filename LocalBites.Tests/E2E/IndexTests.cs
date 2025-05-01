@@ -10,16 +10,7 @@ public class IndexTests : IAsyncLifetime
     private IBrowser _browser;
     private IBrowserContext _context;
     private IPage _page;
-    private readonly LocalBitesWebAppFactory<Program> _factory;
     private const string APP_URL = "http://localhost:5212/";
-    private string _appUrl;
-
-    public IndexTests()
-    {
-        _factory = new LocalBitesWebAppFactory<Program>();
-        _appUrl = _factory.Server.BaseAddress.ToString();
-    }
-
 
     public async Task InitializeAsync()
     {
@@ -27,41 +18,41 @@ public class IndexTests : IAsyncLifetime
 
         _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
         {
-            Headless = false
+            Headless = true
         });
 
         _context = await _browser.NewContextAsync();
         _page = await _context.NewPageAsync();
     }
 
-    // [Fact]
-    // public async Task IndexPage_Should_DisplayRestaurants()
-    // {
-    //     await _page.GotoAsync(_appUrl);
 
-    //     var restaurantExists = await _page.Locator(".restaurant-item").CountAsync() > 0;
+    [Fact]
+    public async Task IndexPage_Should_DisplayRestaurants()
+    {
+        await _page.GotoAsync(APP_URL);
 
-    //     Assert.True(restaurantExists, "Restaurants should be displayed on the Index page.");
-    // }
+        var restaurantExists = await _page.Locator(".restaurant-item").CountAsync() > 0;
 
-    // [Fact]
-    // public async Task Filter_Should_ShowFilteredResults()
-    // {
-    //     await _page.GotoAsync(_appUrl);
+        Assert.True(restaurantExists, "Restaurants should be displayed on the Index page.");
+    }
 
-    //     // await _page.SelectOptionAsync("#CuisineFilter", "Italian");
+    [Fact]
+    public async Task Filter_Should_ShowFilteredResults()
+    {
+        await _page.GotoAsync(APP_URL);
 
-    //     // await _page.ClickAsync("#filter-button");
+        // await _page.SelectOptionAsync("#CuisineFilter", "Italian");
 
-    //     var filteredText = await _page.InnerTextAsync("body");
-    //     Assert.Contains("Clear Filters", filteredText);
-    // }
+        // await _page.ClickAsync("#filter-button");
+
+        var filteredText = await _page.InnerTextAsync("body");
+        Assert.Contains("Clear Filters", filteredText);
+    }
 
 
     public async Task DisposeAsync()
     {
         await _browser.CloseAsync();
         _playwright.Dispose();
-        _factory.Dispose();
     }
 }
