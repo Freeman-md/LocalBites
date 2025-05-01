@@ -21,13 +21,18 @@
 <section id="filters" class="border rounded-lg p-4">
     <form action="" class="flex space-x-4 justify-between items-center">
         <div class="flex space-x-2 items-center">
-            <select name="Filter.Cuisine" id="Filter.Cuisine" class="w-40">
-                @foreach (var Cuisine in Model.Cuisines) {
-                    <option value="@Cuisine">@Cuisine</option>
-                }
-            </select>
+            <div>
+                <select name="Filter.Cuisine" id="Filter.Cuisine" class="w-40">
+                    <option value="">Select Cuisine</option>
+                    @foreach (var Cuisine in Model.Cuisines) {
+                        <option value="@Cuisine">@Cuisine</option>
+                    }
+                </select>
+                <small asp-validation-for="Filter.Cuisine"></small>
+            </div>
     
             <select name="Filter.Location" id="Filter.Location" class="w-40">
+                <option value="">Select Location</option>
                 @foreach (var Location in Model.Locations) {
                     <option value="@Location">@Location</option>
                 }
@@ -44,9 +49,12 @@
     </form>
 </section>
 
-<section id="restaurants" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<section id="restaurants" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 !mt-4">
     @if (Model.Restaurants.Count <= 0) {
-        <p>There are no restaurants</p>
+        <div class="rounded-lg border col-span-3 p-8 flex flex-col items-center justify-center">
+            <p class="font-semibold text-lg">No restaurants found</p>
+            <p class="text-gray-500">Start by adding a restaurant</p>
+        </div>
     } else {
         @foreach (var restaurant in Model.Restaurants) {
             <partial name="_RestaurantCard" model="restaurant" />

@@ -691,9 +691,17 @@ select:focus {
   top: 0px;
 }
 
+.col-span-3 {
+  grid-column: span 3 / span 3;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.\!mt-4 {
+  margin-top: 1rem !important;
 }
 
 .mb-2 {
@@ -750,6 +758,10 @@ select:focus {
 
 .flex-shrink-0 {
   flex-shrink: 0;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .items-center {
@@ -825,6 +837,10 @@ select:focus {
   padding: 1rem;
 }
 
+.p-8 {
+  padding: 2rem;
+}
+
 .px-10 {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
@@ -844,6 +860,11 @@ select:focus {
   line-height: 1.5rem;
 }
 
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -860,6 +881,10 @@ select:focus {
 
 .font-medium {
   font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
 }
 
 .text-\[\#65758b\] {
