@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Microsoft.Playwright" Version="1.50.0" />
@@ -26,5 +27,11 @@
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
+
+  <Target Name="CopyPlaywrightDeps" AfterTargets="Build">
+    <Copy SourceFiles="../LocalBites/bin/Debug/net8.0/LocalBites.deps.json"
+          DestinationFiles="$(OutDir)Microsoft.Playwright.deps.json"
+          SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>
