@@ -1,0 +1,41 @@
+@page "{id}"
+@model Restaurants.ViewModel
+
+@{
+ViewData["Title"] = Model.Restaurant.Name;
+var restaurant = Model.Restaurant;
+}
+
+<a asp-page="/Index" class="text-sm text-gray-500 hover:underline mb-4 inline-block">&larr; Back</a>
+
+<section class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-sm">
+    <div class="flex justify-between items-start">
+        <div>
+            <h1 class="text-3xl font-semibold">@restaurant.Name</h1>
+            <p class="text-[#65758b] text-sm mt-1 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-linejoin="round" width="16" height="16" stroke-width="2">
+                    <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                    <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
+                </svg>
+                @restaurant.Location
+            </p>
+        </div>
+        <span class="badge badge-primary">@restaurant.Cuisine</span>
+    </div>
+
+    <div class="mt-6">
+        <h2 class="text-lg font-medium text-gray-700 mb-2">About</h2>
+        <p class="text-[#65758b] text-sm">@restaurant.Description</p>
+    </div>
+
+    <div class="flex justify-between items-center mt-6 text-sm text-gray-500">
+        <p>
+            <span class="mr-1">📅 Added:</span> <span>@restaurant.CreatedAt.ToShortDateString()</span>
+        </p>
+    </div>
+
+    <div class="mt-6">
+        <a asp-page="/Restaurants/Edit" asp-route-id="@restaurant.Id" class="btn btn-primary">Edit Restaurant</a>
+    </div>
+</section>

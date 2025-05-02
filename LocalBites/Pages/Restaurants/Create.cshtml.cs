@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace LocalBites.Pages;
+namespace LocalBites.Pages.Restaurants;
 
 public class CreateModel : PageModel {
     private readonly ILogger<CreateModel> _logger;
@@ -42,9 +42,11 @@ public class CreateModel : PageModel {
             Rating = new Random().Next(1, 6)
         };
 
-        await _restaurantRepository.Add(restaurant);
+        Restaurant newRestaurant = await _restaurantRepository.Add(restaurant);
 
         TempData["Success"] = "Restaurant added successfully!";
+        TempData["RestaurantId"] = newRestaurant.Id;
+        
         return RedirectToPage("Create");
     }
 }

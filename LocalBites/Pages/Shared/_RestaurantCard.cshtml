@@ -1,6 +1,6 @@
 @model Restaurant
 
-<a href="#" class="block rounded-lg p-4 shadow-xs shadow-indigo-100 restaurant-item">
+<div class="block rounded-lg p-4 shadow-xs shadow-indigo-100 restaurant-item">
     <img
       alt=""
       src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
@@ -28,6 +28,7 @@
 
           <dd class="text-xs text-gray-500 flex space-x-2 items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" stroke-width="2"> <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path> <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path> </svg> 
+            
             <span>@Model.Location</span>
           </dd>
         </div>
@@ -58,14 +59,14 @@
           </svg>
         </button>
 
-        <button aria-label="Delete" class="flex-shrink-0 border border-gray-300 transition duration-200 hover:bg-gray-500 rounded-md p-1 text-red-500">
+        <a asp-page="/Restaurants/View" asp-route-id="@Model.Id" aria-label="View" class="flex-shrink-0 border border-gray-300 transition duration-200 hover:bg-gray-500 rounded-md p-1 text-red-500">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" stroke-width="2">
             <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
             <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
           </svg>
-        </button>
+        </a>
   
         
       </div>
     </div>
-  </a>
+  </div>

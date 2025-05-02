@@ -1,5 +1,5 @@
-@page "/create"
-@model CreateModel
+@page
+@model Restaurants.CreateModel
 
 @{
 ViewData["Title"] = "Create Restaurants";
@@ -26,13 +26,17 @@ ViewData["Title"] = "Create Restaurants";
 
         <div class="text-red-500 text-sm mb-4" asp-validation-summary="ModelOnly"></div>
 
-        @if (TempData["Success"] != null)
+        @if (TempData["Success"] != null && TempData["RestaurantId"] != null)
         {
+        var restaurantId = TempData["RestaurantId"].ToString();
         <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded mb-4">
             <p>@TempData["Success"]</p>
-            <a asp-page="/Index" class="text-green-800 underline text-sm">View Restaurants</a>
+            <a asp-page="/Restaurants/View" asp-route-id="@restaurantId" class="text-green-800 underline text-sm">
+                View Restaurant
+            </a>
         </div>
         }
+
 
 
         <div>

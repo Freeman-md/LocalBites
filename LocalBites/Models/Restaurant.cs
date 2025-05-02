@@ -29,6 +29,9 @@ public class Restaurant
     [Range(0, 5)]
     public int Rating { get; set; }
 
+    public DateTime CreatedAt { get; set; }  = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; }  = DateTime.UtcNow;
+
     public Restaurant(string name, Location location, Cuisine cuisine, string description)
     {
         Id = Guid.NewGuid().ToString();
