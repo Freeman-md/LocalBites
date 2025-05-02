@@ -1,11 +1,13 @@
 @model Restaurant
 
-<div class="block rounded-lg p-4 shadow-xs shadow-indigo-100 restaurant-item">
+<div class="block rounded-lg p-4 shadow-xs shadow-indigo-100 restaurant-item bg-white h-auto">
+  @if (@Model.ImageUrl != null) {
     <img
       alt=""
-      src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+      src="@Model.ImageUrl"
       class="h-56 w-full rounded-md object-cover"
     />
+  }
   
     <div class="mt-2">
       <dl class="space-y-4">
@@ -51,13 +53,13 @@
           </svg>
         </button>
 
-        <button aria-label="Delete" class="flex-shrink-0 border border-gray-300 transition duration-200 hover:bg-gray-500 rounded-md p-1 text-red-500">
+        <a asp-page="/Restaurants/Edit" asp-route-id="@Model.Id" aria-label="Edit" class="flex-shrink-0 border border-gray-300 transition duration-200 hover:bg-gray-500 rounded-md p-1 text-red-500">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" stroke-width="2">
             <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
             <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
             <path d="M16 5l3 3"></path>
           </svg>
-        </button>
+        </a>
 
         <a asp-page="/Restaurants/View" asp-route-id="@Model.Id" aria-label="View" class="flex-shrink-0 border border-gray-300 transition duration-200 hover:bg-gray-500 rounded-md p-1 text-red-500">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" stroke-width="2">

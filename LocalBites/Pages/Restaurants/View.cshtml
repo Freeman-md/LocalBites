@@ -9,7 +9,16 @@ var restaurant = Model.Restaurant;
 <a asp-page="/Index" class="text-sm text-gray-500 hover:underline mb-4 inline-block">&larr; Back</a>
 
 <section class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-sm">
-    <div class="flex justify-between items-start">
+    @if (@restaurant.ImageUrl != null) {
+        <img
+          alt=""
+          src="@restaurant.ImageUrl"
+          class="h-56 w-full rounded-md object-cover"
+        />
+      }
+  
+      
+    <div class="flex justify-between items-start mt-4">
         <div>
             <h1 class="text-3xl font-semibold">@restaurant.Name</h1>
             <p class="text-[#65758b] text-sm mt-1 flex items-center">

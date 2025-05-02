@@ -28,6 +28,9 @@ public class IndexModel : PageModel
 
     public async Task OnGet()
     {
+        Cuisines = new SelectList(Enum.GetValues(typeof(Cuisine)));
+        Locations = new SelectList(Enum.GetValues(typeof(Location)));
+
         if (Filter.Cuisine.HasValue && !Enum.IsDefined(typeof(Cuisine), Filter.Cuisine.Value))
             ModelState.AddModelError("Filter.Cuisine", "Invalid cuisine selection");
 
@@ -36,9 +39,6 @@ public class IndexModel : PageModel
 
         if (!ModelState.IsValid)
             return;
-
-        Cuisines = new SelectList(Enum.GetValues(typeof(Cuisine)));
-        Locations = new SelectList(Enum.GetValues(typeof(Cuisine)));
         
         Restaurants = await _restaurantRepository.FilterByPreferences(Filter.Cuisine, Filter.Location);
     }
