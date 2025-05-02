@@ -3,6 +3,7 @@ using LocalBites.Interfaces.Repositories;
 using LocalBites.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LocalBites.Pages;
 
@@ -12,8 +13,8 @@ public class IndexModel : PageModel
     private readonly IRestaurantRepository _restaurantRepository;
 
     public List<Restaurant> Restaurants { get; set; } = new();
-    public List<Cuisine> Cuisines  { get; set; } = new();
-    public List<Location> Locations  { get; set; } = new();
+    public SelectList? Cuisines  { get; set; }
+    public SelectList? Locations  { get; set; }
 
     [BindProperty(SupportsGet = true)]
     public FilterCriteria Filter { get; set; } = new();
@@ -26,14 +27,6 @@ public class IndexModel : PageModel
 
     public async Task OnGet()
     {
-        Cuisines = Enum.GetValues(typeof(Cuisine)).Cast<Cuisine>().ToList();
-        Locations = Enum.GetValues(typeof(Cuisine)).Cast<Location>().ToList();
-        
-        Restaurants = await _restaurantRepository.GetAll();
-    }
-
-    public async Task OnGetFilterByPreferences()
-    {
         if (Filter.Cuisine.HasValue && !Enum.IsDefined(typeof(Cuisine), Filter.Cuisine.Value))
             ModelState.AddModelError("Filter.Cuisine", "Invalid cuisine selection");
 
@@ -43,21 +36,9 @@ public class IndexModel : PageModel
         if (!ModelState.IsValid)
             return;
 
+        Cuisines = new SelectList(Enum.GetValues(typeof(Cuisine)).Cast<Cuisine>().ToList());
+        Locations = new SelectList(Enum.GetValues(typeof(Cuisine)).Cast<Location>().ToList());
+        
         Restaurants = await _restaurantRepository.FilterByPreferences(Filter.Cuisine, Filter.Location);
-    }
-
-    public async Task OnPostFilter(Cuisine? cuisine, Location? location)
-    {
-        if (cuisine.HasValue && !Enum.IsDefined(typeof(Cuisine), cuisine.Value))
-            ModelState.AddModelError("cuisine", "Invalid cuisine selection");
-
-        if (location.HasValue && !Enum.IsDefined(typeof(Location), location.Value))
-            ModelState.AddModelError("location", "Invalid location selection");
-
-        if (!ModelState.IsValid)
-            return;
-
-
-        Restaurants = await _restaurantRepository.FilterByPreferences(cuisine, location);
     }
 }

@@ -6,10 +6,10 @@ namespace LocalBites.Tests.E2E;
 
 public class IndexTests : IAsyncLifetime
 {
-    private IPlaywright _playwright;
-    private IBrowser _browser;
-    private IBrowserContext _context;
-    private IPage _page;
+    private IPlaywright? _playwright;
+    private IBrowser? _browser;
+    private IBrowserContext? _context;
+    private IPage? _page;
     private const string APP_URL = "http://localhost:5212/";
 
     public async Task InitializeAsync()
