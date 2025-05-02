@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LocalBites.Models;
+using LocalBites.Models.Enums;
 
 namespace LocalBites.Tests.Builders;
 

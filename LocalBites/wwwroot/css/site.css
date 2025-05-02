@@ -6,6 +6,10 @@
     --color-muted: #65758b;
 }
 
+body {
+    @apply bg-gray-100/80;
+}
+
 @layer base {
     select {
         @apply p-2 w-full rounded-lg border border-gray-300 text-gray-700 sm:text-sm focus:ring-offset-2;
@@ -14,7 +18,7 @@
 
 @layer components {
     .btn {
-        @apply rounded-md px-2 py-1.5 transition duration-200
+        @apply rounded-lg px-2.5 py-2 transition duration-200
     }
 
     .btn-primary {
@@ -35,5 +39,13 @@
 
     .badge-primary {
         @apply  bg-blue-100 text-blue-500
+    }
+
+    .form-input {
+        @apply bg-gray-50 text-[#65758b] w-full rounded-xl border py-3 px-3.5 outline-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-800 placeholder:text-sm text-sm
+    }
+
+    .form-select {
+        @apply bg-gray-50 text-[#65758b] w-full rounded-xl border p-3 outline-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-800
     }
 }

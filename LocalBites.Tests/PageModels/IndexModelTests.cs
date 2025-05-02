@@ -1,6 +1,7 @@
 using System;
 using LocalBites.Interfaces.Repositories;
 using LocalBites.Models;
+using LocalBites.Models.Enums;
 using LocalBites.Pages;
 using LocalBites.Repositories;
 using LocalBites.Tests.Builders;
@@ -79,7 +80,7 @@ public class IndexModelTests
         #endregion
 
         #region Act
-        await _indexModel.OnGetFilterByPreferences();
+        await _indexModel.OnGet();
         #endregion
 
         #region Assert
@@ -106,7 +107,7 @@ public class IndexModelTests
         #endregion
 
         #region Act
-        await _indexModel.OnGetFilterByPreferences();
+        await _indexModel.OnGet();
         #endregion
 
         #region Assert
@@ -131,7 +132,7 @@ public class IndexModelTests
         #endregion
 
         #region Act
-        await _indexModel.OnGetFilterByPreferences();
+        await _indexModel.OnGet();
         #endregion
 
         #region Assert

@@ -4,6 +4,7 @@ using LocalBites.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using LocalBites.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using LocalBites.Models.Enums;
 
 namespace LocalBites.Repositories;
 

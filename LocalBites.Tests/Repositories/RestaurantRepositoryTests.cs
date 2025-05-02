@@ -7,6 +7,7 @@ using LocalBites.Tests.Builders;
 using Microsoft.EntityFrameworkCore;
 using LocalBites.Models;
 using Moq;
+using LocalBites.Models.Enums;
 
 namespace LocalBites.Tests.Repositories;
 

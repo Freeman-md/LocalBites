@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using LocalBites.Interfaces.Repositories;
 using LocalBites.Models;
+using LocalBites.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -36,8 +37,8 @@ public class IndexModel : PageModel
         if (!ModelState.IsValid)
             return;
 
-        Cuisines = new SelectList(Enum.GetValues(typeof(Cuisine)).Cast<Cuisine>().ToList());
-        Locations = new SelectList(Enum.GetValues(typeof(Cuisine)).Cast<Location>().ToList());
+        Cuisines = new SelectList(Enum.GetValues(typeof(Cuisine)));
+        Locations = new SelectList(Enum.GetValues(typeof(Cuisine)));
         
         Restaurants = await _restaurantRepository.FilterByPreferences(Filter.Cuisine, Filter.Location);
     }

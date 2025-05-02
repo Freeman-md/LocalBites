@@ -1,22 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using LocalBites.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace LocalBites.Models;
-
-public enum Cuisine
-{
-    Italian,
-    Chinese,
-    Mexican
-}
-
-public enum Location 
-{
-    NewYork,
-    London,
-    Rome,
-    Paris
-}
 
 [Index(nameof(Name), IsUnique = true)]
 public class Restaurant

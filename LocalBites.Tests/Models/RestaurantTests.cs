@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using LocalBites.Tests.Builders;
 using LocalBites.Models;
+using LocalBites.Models.Enums;
 
 namespace LocalBites.Tests.Models;
 

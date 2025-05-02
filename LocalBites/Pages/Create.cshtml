@@ -1,0 +1,81 @@
+@page "/create"
+@model CreateModel
+
+@{
+ViewData["Title"] = "Create Restaurants";
+}
+
+<section id="heading" class="w-full max-w-xl mx-auto text-center justify-center mb-8">
+
+    <div class="badge badge-primary mb-2 inline-block">
+        New Entry
+    </div>
+
+    <h1 class="text-3xl md:text-4xl font-display font-medium mb-2">Add a Restaurant</h1>
+
+    <p class="text-[#65758b]">
+        Save details about your dining experiences so you can remember them later.
+    </p>
+
+</section>
+
+<section id="form" class="max-w-xl mx-auto">
+    <form method="post" enctype="multipart/form-data"
+        class="max-w-lg rounded-lg bg-white flex flex-col space-y-4 mx-auto p-8">
+        <h2 class="text-2xl font-semibold block mb-4">Add New Restaurant</h2>
+
+        <div class="text-red-500 text-sm mb-4" asp-validation-summary="ModelOnly"></div>
+
+        @if (TempData["Success"] != null)
+        {
+        <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded mb-4">
+            <p>@TempData["Success"]</p>
+            <a asp-page="/Index" class="text-green-800 underline text-sm">View Restaurants</a>
+        </div>
+        }
+
+
+        <div>
+            <label class="block mb-2">Restaurant Name</label>
+            <input type="text" asp-for="CreateRestaurantDto.Name" placeholder="Enter restaurant name"
+                class="form-input">
+            <span asp-validation-for="CreateRestaurantDto.Name" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div>
+            <label class="block mb-2">Location</label>
+            <select asp-for="CreateRestaurantDto.Location" asp-items="Model.Locations" class="form-select">
+                <option value="N/A">Select city</option>
+            </select>
+            <span asp-validation-for="CreateRestaurantDto.Location" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div>
+            <label class="block mb-2">Cuisine Type</label>
+            <select asp-for="CreateRestaurantDto.Cuisine" asp-items="Model.Cuisines" class="form-select">
+                <option value="N/A">Select cuisine type</option>
+            </select>
+            <span asp-validation-for="CreateRestaurantDto.Cuisine" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div>
+            <label class="block mb-2">Restaurant Image</label>
+            <input type="file" asp-for="CreateRestaurantDto.Image" class="form-input" accept=".jpg,.png,.jpeg">
+            <span asp-validation-for="CreateRestaurantDto.Image" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div>
+            <label class="block mb-2">Textarea</label>
+            <textarea asp-for="CreateRestaurantDto.Description" class="form-input resize-none" rows="4"
+                placeholder="Write a brief description of the restaurant..."></textarea>
+            <span asp-validation-for="CreateRestaurantDto.Description" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div class="flex justify-end items-center space-x-4 mt-4">
+            <a asp-page="Index" class="btn btn-grey">Cancel</a>
+            <button type="submit" class="btn btn-primary">Add Restaurant</button>
+        </div>
+    </form>
+</section>
+
+<partial name="_ValidationScriptsPartial" />

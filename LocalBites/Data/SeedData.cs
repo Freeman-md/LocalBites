@@ -1,4 +1,5 @@
 using LocalBites.Models;
+using LocalBites.Models.Enums;
 
 namespace LocalBites.Data;
 

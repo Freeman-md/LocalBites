@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using LocalBites.Models.Enums;
 
 namespace LocalBites.Models;
 
