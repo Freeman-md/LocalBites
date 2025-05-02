@@ -9,7 +9,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace LocalBites.Pages.Restaurants;
 
-public class CreateModel : PageModel {
+public class CreateModel : PageModel
+{
     private readonly ILogger<CreateModel> _logger;
     private readonly IRestaurantRepository _restaurantRepository;
 
@@ -20,33 +21,58 @@ public class CreateModel : PageModel {
 
     public SelectList Cuisines { get; set; }
 
-    public CreateModel(ILogger<CreateModel> logger, IRestaurantRepository restaurantRepository) {
+    public CreateModel(ILogger<CreateModel> logger, IRestaurantRepository restaurantRepository)
+    {
         _logger = logger;
         _restaurantRepository = restaurantRepository;
     }
 
-    public void OnGet() {
+    public void OnGet()
+    {
         Locations = new SelectList(Enum.GetValues(typeof(Location)));
         Cuisines = new SelectList(Enum.GetValues(typeof(Cuisine)));
     }
 
-    public async Task<IActionResult> OnPostAsync() {
+    public async Task<IActionResult> OnPostAsync()
+    {
         Locations = new SelectList(Enum.GetValues(typeof(Location)));
         Cuisines = new SelectList(Enum.GetValues(typeof(Cuisine)));
 
-        if (!ModelState.IsValid) {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
 
-        var restaurant = new Restaurant(CreateRestaurantDto.Name, CreateRestaurantDto.Location, CreateRestaurantDto.Cuisine, CreateRestaurantDto.Description) {
-            Rating = new Random().Next(1, 6)
+        string imageUrl = await SaveImage(CreateRestaurantDto.Image);
+
+        var restaurant = new Restaurant(CreateRestaurantDto.Name, CreateRestaurantDto.Location, CreateRestaurantDto.Cuisine, CreateRestaurantDto.Description)
+        {
+            Rating = new Random().Next(1, 6),
+            ImageUrl = imageUrl
         };
 
         Restaurant newRestaurant = await _restaurantRepository.Add(restaurant);
 
         TempData["Success"] = "Restaurant added successfully!";
         TempData["RestaurantId"] = newRestaurant.Id;
-        
+
         return RedirectToPage("Create");
+    }
+
+    public async Task<string> SaveImage(IFormFile formFile)
+    {
+        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+        if (!Directory.Exists(uploadsFolder))
+            Directory.CreateDirectory(uploadsFolder);
+
+        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(CreateRestaurantDto.Image.FileName);
+        var filePath = Path.Combine(uploadsFolder, fileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await formFile.CopyToAsync(stream);
+        }
+
+        return $"/uploads/{fileName}";
     }
 }
